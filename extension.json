@@ -1,0 +1,37 @@
+{
+	"name": "RenderTheFuck",
+	"version": "0.1.0",
+	"author": "Raymond Wu (小璋丸)",
+	"url": "https://www.mediawiki.org/wiki/Extension:RenderTheFuck",
+	"descriptionmsg": "render-the-fuck-desc",
+	"license-name": "Apache-2.0",
+	"type": "parserhook",
+	"require": {
+		"MediaWiki": ">= 1.25"
+	},
+	"MessagesDirs": {
+		"RenderTheFuck": ["i18n"]
+	},
+	"AutoloadClasses": {
+		"RenderTheFuck": "RenderTheFuck.class.php"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": [
+			"RenderTheFuck::onParserFirstCallInit"
+		]
+	},
+	"ResourceModules": {
+		"ext.d3.core": {
+			"scripts": [
+				"d3.v3.js",
+				"render.js"
+			],
+			"styles": "RenderTheFuck.css"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "modules",
+		"remoteExtPath": "RenderTheFuck/modules"
+	},
+	"manifest_version": 1
+}
