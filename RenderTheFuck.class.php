@@ -10,13 +10,13 @@ class RenderTheFuck {
 	private static $rank = 0;
 
 	/**
-	 * 掛載點設定 (由 MediaWiki 觸發)
+	 * Setup hook tag
 	 *
 	 * @since 0.1.0
-	 * @param $parser MediaWiki 的語法處理器
+	 * @param $parser MediaWiki parser
 	 */
 	public static function onParserFirstCallInit(&$parser) {
-		// 取得版本字串
+		// Load version string.
 		global $wgExtensionCredits;
 		foreach ($wgExtensionCredits['parserhook'] as $ext) {
 			if ($ext['name']==='RenderTheFuck') {
@@ -25,7 +25,7 @@ class RenderTheFuck {
 			}
 		}
 
-		// 設定函數鉤
+		// Setup callback for <thefuck> tag.
 		$parser->setHook('thefuck', array('RenderTheFuck', 'render'));
 
 		return true;
@@ -57,7 +57,8 @@ class RenderTheFuck {
 		// Decode and encode the json string to ensure it's well-formated.
 		if (isset($param['example']) && in_array($param['example'], $AVAILABLE_EXAMPLES)) {
 			$file = sprintf('%s/examples/%s.tfj', $BASE, $param['example']);
-			$json = json_encode(json_decode(file_get_contents($file)));
+			$exampleCode = file_get_contents($file);
+			$json = json_encode(json_decode($exampleCode));
 		} else {
 			$json = json_encode(json_decode($in));
 		}
@@ -66,7 +67,7 @@ class RenderTheFuck {
 		if ($json[0] !== '{') {
 			$json = json_encode(array(
 				'wtf' => 'error',
-				'properties' => array(
+				'settings' => array(
 					'message' => 'The fuck is not in correct JSON format.'
 				)
 			));
@@ -78,6 +79,12 @@ class RenderTheFuck {
 		// %s json
 		$template = file_get_contents($BASE . '/template.html');
 		$output   = sprintf($template, $elid, $svgw, $svgh, $json);
+
+		// Dump source code of example
+		if (strlen($exampleCode)>0) {
+			$output .= '<p>Source code of timeline example:</p>';
+			$output .= '<pre>' . $exampleCode . '</pre>';
+		}
 
 		return array( $output, "markerType" => 'nowiki' );
 	}

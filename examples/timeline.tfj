@@ -1,6 +1,6 @@
 {
   "wtf": "timeline",
-  "properties": {
+  "settings": {
     "title": "Timeline example",
     "unit": "year"
   },

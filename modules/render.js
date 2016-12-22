@@ -172,7 +172,7 @@
         "x": svg.attr("width") / 2,
         "y": svg.attr("height") - 20
       })
-      .text(thefuck.properties.title);
+      .text(thefuck.settings.title);
   };
 
   d3.selection.prototype.theFuckError = function(thefuck) {
@@ -202,7 +202,7 @@
         "font-size": "1.2em",
         "fill": "#a00000"
       })
-      .text(thefuck.properties.message);
+      .text(thefuck.settings.message);
   };
 
   // Load data
@@ -224,7 +224,7 @@
       default:
         d3.select(this).theFuckError({
           "wtf": "error",
-          "properties": {
+          "settings": {
             "message": "Unrecognize what the fuck."
           }
         });
