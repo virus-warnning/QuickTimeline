@@ -25,8 +25,7 @@
 			"scripts": [
 				"d3.v3.js",
 				"render.js"
-			],
-			"styles": "RenderTheFuck.css"
+			]
 		}
 	},
 	"ResourceFileModulePaths": {
