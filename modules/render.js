@@ -1,10 +1,8 @@
 (function() {
   // The fuck timelime
   d3.selection.prototype.theFuckTimeline = function(thefuck) {
-    var svg  = this;
-
-    // Data validation
-    // TODO
+    // TODO: validation
+    var svg = this;
 
     var AVAILABLE_SCALE = [10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10];
 
@@ -80,6 +78,15 @@
       return barYFomula(d, i) + 15;
     };
     var titleTextFomula = function(d, i) {
+      if (typeof d.wiki === "string" && d.wiki !== "") return "";
+      var p1 = (d.from < 0) ? "BC" : "AD";
+      var p2 = (d.to < 0) ? "BC" : "AD";
+      var y1 = Math.abs(d.from);
+      var y2 = Math.abs(d.to);
+      return d.title + " (" + p1 + " " + y1 + " ~ " + p2 + " " + y2 + ")";
+    };
+    var titleWikiFomula = function(d, i) {
+      if (typeof d.wiki !== "string" || d.wiki === "") return "";
       var p1 = (d.from < 0) ? "BC" : "AD";
       var p2 = (d.to < 0) ? "BC" : "AD";
       var y1 = Math.abs(d.from);
@@ -142,6 +149,21 @@
         "text-anchor": titleAnchorFormula
       })
       .text(titleTextFomula);
+
+    // Draw bar linked title
+    svg.select("g.bars-title").selectAll("a").data(thefuck.lines).enter()
+      .append("a")
+      .attr({
+        "xlink:href": function(d, i) { return "https://en.wikipedia.org/wiki/" + d.wiki; },
+        "target": "_blank"
+      })
+      .append("text")
+      .attr({
+        "x": titleXFormula,
+        "y": titleYFormula,
+        "text-anchor": titleAnchorFormula
+      })
+      .text(titleWikiFomula);
 
     // Draw graph title
     svg.append("text")
