@@ -173,6 +173,26 @@
         "y": svg.attr("height") - 20
       })
       .text(thefuck.settings.title);
+
+    // Draw download link
+    var ftid = svg.attr("id") + "-footer";
+    var blob = new Blob(
+      [
+        "<?xml version=\"1.0\"?>",
+        "<svg xmlns=\"http://www.w3.org/2000/svg\">",
+        svg.html(),
+        "</svg>"
+      ],
+      {"type": "image/xml+svg"}
+    );
+    var link = window.URL.createObjectURL(blob);
+
+    d3.select("#"+ftid).append("a")
+      .attr({
+        "href": link,
+        "download": svg.attr("id") + ".svg"
+      })
+      .text("Download");
   };
 
   d3.selection.prototype.theFuckError = function(thefuck) {

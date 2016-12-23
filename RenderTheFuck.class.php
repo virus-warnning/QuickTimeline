@@ -81,7 +81,7 @@ class RenderTheFuck {
 		$output   = sprintf($template, $elid, $svgw, $svgh, $json);
 
 		// Dump source code of example
-		if (strlen($exampleCode)>0) {
+		if (isset($exampleCode) && strlen($exampleCode)>0) {
 			$output .= '<p>Source code of timeline example:</p>';
 			$output .= '<pre>' . $exampleCode . '</pre>';
 		}
