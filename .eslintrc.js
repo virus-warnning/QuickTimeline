@@ -1,7 +1,4 @@
 module.exports = {
-    "plugins": [
-        "json"
-    ],
     "env": {
         "browser": true
     },
