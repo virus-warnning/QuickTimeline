@@ -20,6 +20,7 @@
     
     var range = max - min;
     var ratio = (svg.attr("width")-40) / range;
+    var scale = 0;
 
     var i;
     for (i in AVAILABLE_SCALE) {
@@ -35,7 +36,6 @@
       axisPositions.push(scale * minP);
       minP++;
     }
-    console.log(axisPositions);
 
     var posXFomula = function(d) {
       return parseInt((d - min) * ratio + 20);
@@ -49,14 +49,11 @@
     var barYFomula = function(d, i) {
       return i * 45 + 40;
     };
-    var barWFomula = function(d, i) {
+    var barWFomula = function(d) {
       return parseInt((d.to - d.from) * ratio);
     };
-    var axisXFormula = function(d, i) {
+    var axisXFormula = function(d) {
       return parseInt((d - min) * ratio + 20);
-    };
-    var axisTitleXFormula = function(d, i) {
-      return axisXFormula(d, i) + 5;
     };
     var titleXFormula = function(d) {
       var left = ((d.from + d.to)/2 < mid);
@@ -71,13 +68,7 @@
       var left = ((d.from + d.to)/2 < mid);
       return left ? "begin" : "end";
     };
-    var titleXFomula = function(d, i) {
-      return 300;
-    };
-    var titleYFomula = function(d, i) {
-      return barYFomula(d, i) + 15;
-    };
-    var titleTextFomula = function(d, i) {
+    var titleTextFomula = function(d) {
       if (typeof d.wiki === "string" && d.wiki !== "") return "";
       var p1 = (d.from < 0) ? "BC" : "AD";
       var p2 = (d.to < 0) ? "BC" : "AD";
@@ -85,7 +76,7 @@
       var y2 = Math.abs(d.to);
       return d.title + " (" + p1 + " " + y1 + " ~ " + p2 + " " + y2 + ")";
     };
-    var titleWikiFomula = function(d, i) {
+    var titleWikiFomula = function(d) {
       if (typeof d.wiki !== "string" || d.wiki === "") return "";
       var p1 = (d.from < 0) ? "BC" : "AD";
       var p2 = (d.to < 0) ? "BC" : "AD";
@@ -154,7 +145,7 @@
     svg.select("g.bars-title").selectAll("a").data(thefuck.lines).enter()
       .append("a")
       .attr({
-        "xlink:href": function(d, i) { return "https://en.wikipedia.org/wiki/" + d.wiki; },
+        "xlink:href": function(d) { return "https://en.wikipedia.org/wiki/" + d.wiki; },
         "target": "_blank"
       })
       .append("text")
@@ -235,10 +226,10 @@
 
     // Bind and Render
     switch (thefuck.wtf) {
-      case 'timeline':
+      case "timeline":
         d3.select(this).theFuckTimeline(thefuck);
         break;
-      case 'error':
+      case "error":
         d3.select(this).theFuckError(thefuck);
         break;
       default:
