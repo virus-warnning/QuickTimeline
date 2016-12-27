@@ -166,12 +166,14 @@
       .text(thefuck.settings.title);
 
     // Draw download link
-    var ftid = svg.attr("id") + "-footer";
-    var blob = new Blob(
+    var ftid  = svg.attr("id") + "-footer";
+    var style = THE_FUCK_STYLES["timeline"];
+    var body  = svg.html().replace("<defs></defs>", "<defs><style type=\"text/css\">" + style + "</style></defs>");
+    var blob  = new Blob(
       [
         "<?xml version=\"1.0\"?>",
         "<svg xmlns=\"http://www.w3.org/2000/svg\">",
-        svg.html(),
+        body,
         "</svg>"
       ],
       {"type": "image/xml+svg"}

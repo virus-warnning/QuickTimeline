@@ -24,7 +24,12 @@
 		"ext.d3.core": {
 			"scripts": [
 				"d3.v3.js",
-				"render.js"
+				"styles.def.js",
+				"styles.timeline.js",
+				"render.min.js"
+			],
+			"styles": [
+				"timeline.min.css"
 			]
 		}
 	},

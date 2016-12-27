@@ -5,11 +5,15 @@
   "author": "Raymond Wu",
   "private": true,
   "scripts": {
+    "uglify": "uglifyjs modules/render.js -c -o modules/render.min.js",
+    "cssmin": "cssmin modules/timeline.css > modules/timeline.min.css",
     "lint-js": "eslint --ext .js modules/render.js",
     "lint-json": "jsonlint examples/timeline.tfj -q -c"
   },
   "devDependencies": {
     "eslint": "3.6.1",
-    "jsonlint": "1.6.0"
+    "jsonlint": "1.6.0",
+    "uglify-js": "2.7.5",
+    "cssmin": "0.4.3"
   }
 }
