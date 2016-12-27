@@ -1,9 +1,11 @@
 {
-    "scripts": {
-        "lint": "phpcs --standard=PSR2 RenderTheFuck.class.php",
-        "beautify": "phpcbf --standard=PSR2 RenderTheFuck.class.php"
-    },
     "require-dev": {
-        "squizlabs/PHP_CodeSniffer": "^2.7"
+        "mediawiki/mediawiki-codesniffer": "0.7.2"
+    },
+    "scripts": {
+        "test": [
+            "phpcs -p -s"
+        ],
+        "fix": "phpcbf"
     }
 }
