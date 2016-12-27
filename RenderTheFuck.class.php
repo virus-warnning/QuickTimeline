@@ -57,7 +57,7 @@ class RenderTheFuck
         }
 
         $BASE = dirname(__FILE__);
-        $AVAILABLE_EXAMPLES = array('timeline');
+        $AVAILABLE_EXAMPLES = array('timeline', 'malicious');
 
         // Check input for security concern.
         $svgw = self::getIntValue($param, 'width', 400);
@@ -93,7 +93,9 @@ class RenderTheFuck
         // Dump source code of example
         if (isset($exampleCode) && strlen($exampleCode)>0) {
             $output .= '<p>Source code of timeline example:</p>';
-            $output .= '<pre>' . $exampleCode . '</pre>';
+            $output .= '<div style="width:90%; height:250px; overflow-y: scroll; border: 1px solid #a7d7f9; border-radius: 5px;">';
+            $output .= '<pre style="margin: 10px;">' . $exampleCode . '</pre>';
+            $output .= '</div>';
         }
 
         return array( $output, "markerType" => 'nowiki' );
