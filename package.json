@@ -5,15 +5,25 @@
   "author": "Raymond Wu",
   "private": true,
   "scripts": {
-    "uglify": "uglifyjs modules/render.js -c -o modules/render.min.js",
     "cssmin": "cssmin modules/timeline.css > modules/timeline.min.css",
     "lint-js": "eslint --ext .js modules/render.js",
-    "lint-json": "jsonlint examples/timeline.tfj -q -c"
+    "lint-json": "jsonlint examples/timeline.tfj -q -c",
+    "compile": "babel modules/render.es6 -o modules/render.obj.js",
+    "browserify": "browserify modules/render.obj.js -o modules/render.js",
+    "uglify": "uglifyjs modules/render.js -c -o modules/render.min.js",
+    "cleanjs": "rm -f modules/render.obj.js modules/render.js",
+    "build": "yarn run compile && yarn run browserify && yarn uglify && yarn cleanjs",
+    "bbhelp": "babel --help"
   },
   "devDependencies": {
     "eslint": "3.6.1",
     "jsonlint": "1.6.0",
     "uglify-js": "2.7.5",
-    "cssmin": "0.4.3"
+    "cssmin": "0.4.3",
+    "jsonschema": "1.1.1",
+    "d3": "",
+    "babel-cli": "6.9.0",
+    "babel-preset-es2015-script": "",
+    "browserify": ""
   }
 }

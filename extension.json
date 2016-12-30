@@ -21,7 +21,7 @@
 		]
 	},
 	"ResourceModules": {
-		"ext.d3.core": {
+		"ext.renderthefuck.all": {
 			"scripts": [
 				"d3.v3.js",
 				"styles.def.js",

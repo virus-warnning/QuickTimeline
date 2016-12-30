@@ -53,7 +53,7 @@ class RenderTheFuck
 	public static function render( $in, $param = [], $parser = null, $frame = false ) {
 
 		if ( self::$rank === 0 ) {
-			$parser->getOutput()->addModules( [ 'ext.d3.core' ] );
+			$parser->getOutput()->addModules( [ 'ext.renderthefuck.all' ] );
 		}
 
 		$BASE = __DIR__;
