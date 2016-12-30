@@ -1,4 +1,6 @@
-// import d3 from "d3";
+// do not use import in script mode
+const d3 = require('d3');
+// console.log(d3.select("#thefuck-00").attr("width"));
 
 // The fuck timelime
 d3.selection.prototype.theFuckTimeline = function(thefuck) {
@@ -36,19 +38,19 @@ d3.selection.prototype.theFuckTimeline = function(thefuck) {
     minP++;
   }
 
-  const posXFomula = (d) => {
+  const posXFormula = (d) => {
     return parseInt((d - min) * ratio + 20);
   };
-  const posYFomula = (d, i) => {
+  const posYFormula = (d, i) => {
     return i * 45 + 40;
   };
-  const barXFomula = (d) => {
-    return posXFomula(d.from);
+  const barXFormula = (d) => {
+    return posXFormula(d.from);
   };
-  const barYFomula = (d, i) => {
+  const barYFormula = (d, i) => {
     return i * 45 + 40;
   };
-  const barWFomula = (d) => {
+  const barWFormula = (d) => {
     return parseInt((d.to - d.from) * ratio);
   };
   const axisXFormula = (d) => {
@@ -57,17 +59,17 @@ d3.selection.prototype.theFuckTimeline = function(thefuck) {
   const titleXFormula = (d) => {
     const left = ((d.from + d.to)/2 < mid);
     return left ?
-      posXFomula(d.from) + 10 :
-      posXFomula(d.to) - 10;
+      posXFormula(d.from) + 10 :
+      posXFormula(d.to) - 10;
   };
   const titleYFormula = (d, i) => {
-    return posYFomula(d, i) + 15;
+    return posYFormula(d, i) + 15;
   };
   const titleAnchorFormula = (d) => {
     const left = ((d.from + d.to)/2 < mid);
     return left ? "begin" : "end";
   };
-  const titleTextFomula = (d) => {
+  const titleTextFormula = (d) => {
     if (typeof d.wiki === "string" && d.wiki !== "") return "";
     const p1 = (d.from < 0) ? "BC" : "AD";
     const p2 = (d.to < 0) ? "BC" : "AD";
@@ -75,7 +77,7 @@ d3.selection.prototype.theFuckTimeline = function(thefuck) {
     const y2 = Math.abs(d.to);
     return d.title + " (" + p1 + " " + y1 + " ~ " + p2 + " " + y2 + ")";
   };
-  const titleWikiFomula = (d) => {
+  const titleWikiFormula = (d) => {
     if (typeof d.wiki !== "string" || d.wiki === "") return "";
     const p1 = (d.from < 0) ? "BC" : "AD";
     const p2 = (d.to < 0) ? "BC" : "AD";
@@ -89,79 +91,67 @@ d3.selection.prototype.theFuckTimeline = function(thefuck) {
   svg.classed("rtf-theme-default", true);
 
   // Draw background
-  svg.append("rect").classed("bg", true).attr({
-    "x": 0,
-    "y": 0,
-    "width": "100%",
-    "height": "100%"
-  });
+  svg.append("rect").classed("bg", true)
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", "100%")
+    .attr("height", "100%");
 
   // Draw base bar
   svg.append("g").classed("bars-base", true).selectAll("rect").data(thefuck.lines).enter()
-    .append("rect").attr({
-      "x": 20,
-      "y": barYFomula,
-      "width": svg.attr("width")-40,
-      "height": 30
-    });
+    .append("rect")
+    .attr("x", 20)
+    .attr("y", barYFormula)
+    .attr("width", svg.attr("width")-40)
+    .attr("height", 30);
 
   // Draw bar
   svg.append("g").classed("bars", true).selectAll("rect").data(thefuck.lines).enter()
-    .append("rect").attr({
-      "x": barXFomula,
-      "y": barYFomula,
-      "width": barWFomula,
-      "height": 30
-    });
+    .append("rect")
+    .attr("x", barXFormula)
+    .attr("y", barYFormula)
+    .attr("width", barWFormula)
+    .attr("height", 30);
 
   // Draw axis
   svg.append("g").classed("axes", true).selectAll("line").data(axisPositions).enter()
-    .append("line").attr({
-      "x1": axisXFormula,
-      "y1": 20,
-      "x2": axisXFormula,
-      "y2": svg.attr("height") - 70
-    });
+    .append("line")
+    .attr("x1", axisXFormula)
+    .attr("y1", 20)
+    .attr("x2", axisXFormula)
+    .attr("y2", svg.attr("height")-70);
 
   // Draw axis title
   svg.append("g").classed("axes-title", true).selectAll("text").data(axisPositions).enter()
-    .append("text").attr({
-      "x": axisXFormula,
-      "y": svg.attr("height") - 65
-    }).text(function(d) { return d; });
+    .append("text")
+    .attr("x", axisXFormula)
+    .attr("y", svg.attr("height") - 65)
+    .text(function(d) { return d; });
 
   // Draw bar title
   svg.append("g").classed("bars-title", true).selectAll("text").data(thefuck.lines).enter()
     .append("text")
-    .attr({
-      "x": titleXFormula,
-      "y": titleYFormula,
-      "text-anchor": titleAnchorFormula
-    })
-    .text(titleTextFomula);
+    .attr("x", titleXFormula)
+    .attr("y", titleYFormula)
+    .attr("anchor", titleAnchorFormula)
+    .text(titleTextFormula);
 
   // Draw bar linked title
   svg.select("g.bars-title").selectAll("a").data(thefuck.lines).enter()
     .append("a")
-    .attr({
-      "xlink:href": function(d) { return "https://en.wikipedia.org/wiki/" + d.wiki; },
-      "target": "_blank"
-    })
+    .attr("xlink:href", function(d) { return "https://en.wikipedia.org/wiki/" + d.wiki; })
+    .attr("target", "_blank")
     .append("text")
-    .attr({
-      "x": titleXFormula,
-      "y": titleYFormula,
-      "text-anchor": titleAnchorFormula
-    })
-    .text(titleWikiFomula);
+    .attr("x", titleXFormula)
+    .attr("y", titleYFormula)
+    .attr("text-anchor", titleAnchorFormula)
+    .text(titleWikiFormula);
 
   // Draw graph title
   svg.append("text")
     .classed("title", true)
-    .attr({
-      "x": svg.attr("width") / 2,
-      "y": svg.attr("height") - 20
-    })
+    .attr("x", svg.attr("width")/2)
+    .attr("y", svg.attr("height")-20)
     .text(thefuck.settings.title);
 
   // Draw download link
@@ -180,10 +170,8 @@ d3.selection.prototype.theFuckTimeline = function(thefuck) {
   const link = window.URL.createObjectURL(blob);
 
   d3.select("#"+ftid).append("a")
-    .attr({
-      "href": link,
-      "download": svg.attr("id") + ".svg"
-    })
+    .attr("href", link)
+    .attr("download", svg.attr("id") + ".svg")
     .text("Download");
 };
 
@@ -197,23 +185,20 @@ d3.selection.prototype.theFuckError = function(thefuck) {
   svg.classed("rtf-theme-default", true);
 
   // Draw background
-  svg.append("rect").classed("bg", true).attr({
-    "x": 0,
-    "y": 0,
-    "width": "100%",
-    "height": "100%",
-    "fill": "#f07070"
-  });
+  svg.append("rect").classed("bg", true)
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "#f07070");
 
   // Draw error message
   svg.append("text")
-    .attr({
-      "x": svg.attr("width") / 2,
-      "y": svg.attr("height") / 2,
-      "text-anchor": "middle",
-      "font-size": "1.2em",
-      "fill": "#a00000"
-    })
+    .attr("x", svg.attr("width") / 2)
+    .attr("y", svg.attr("height") / 2)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "1.2em")
+    .attr("fill", "#a00000")
     .text(thefuck.settings.message);
 };
 

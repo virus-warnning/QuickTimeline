@@ -23,7 +23,6 @@
 	"ResourceModules": {
 		"ext.renderthefuck.all": {
 			"scripts": [
-				"d3.v3.js",
 				"styles.def.js",
 				"styles.timeline.js",
 				"render.min.js"

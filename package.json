@@ -13,7 +13,8 @@
     "uglify": "uglifyjs modules/render.js -c -o modules/render.min.js",
     "cleanjs": "rm -f modules/render.obj.js modules/render.js",
     "build": "yarn run compile && yarn run browserify && yarn uglify && yarn cleanjs",
-    "bbhelp": "babel --help"
+    "bbhelp": "babel --help",
+    "sdb": "browserify test.js"
   },
   "devDependencies": {
     "eslint": "3.6.1",
