@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "eslint": "3.6.1",
+    "jsonfile": "",
     "jsonlint": "1.6.0",
     "uglify-js": "2.7.5",
     "cssmin": "0.4.3",

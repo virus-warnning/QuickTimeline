@@ -1,6 +1,5 @@
-// do not use import in script mode
+// Don't use import statement in script mode
 const d3 = require('d3');
-// console.log(d3.select("#thefuck-00").attr("width"));
 
 // The fuck timelime
 d3.selection.prototype.theFuckTimeline = function(thefuck) {
