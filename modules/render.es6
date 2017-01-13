@@ -1,20 +1,21 @@
 // Don't use import statement in script mode
 const d3 = require('d3');
+const validate = require('jsonschema').validate;
+const schema = require('../schemas/timeline.schema.json');
 
 // The fuck timelime
 d3.selection.prototype.theFuckTimeline = function(thefuck) {
-  // TODO: validation
   const svg = this;
   const AVAILABLE_SCALE = [10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10];
 
   let min = 9999;
   let max = -9999;
-  for (i in thefuck.lines) {
-    if (thefuck.lines[i].from < min) {
-      min = thefuck.lines[i].from;
+  for (const line of thefuck.lines) {
+    if (line.from < min) {
+      min = line.from;
     }
-    if (thefuck.lines[i].to > max) {
-      max = thefuck.lines[i].to;
+    if (line.to > max) {
+      max = line.to;
     }
   }
   const mid = (max+min) / 2;
@@ -177,7 +178,15 @@ d3.selection.prototype.theFuckTimeline = function(thefuck) {
 d3.selection.prototype.theFuckError = function(thefuck) {
   const svg = this;
 
-  svg.attr("height", 50);
+  const MSG_H = 25;
+
+  let msgCount = 1;
+  if (typeof thefuck.settings.message !== 'string') {
+    msgCount = thefuck.settings.message.length;
+  }
+  const h = MSG_H * (msgCount + 0.6);
+
+  svg.attr("height", h);
   svg.select("defs").remove();
 
   svg.classed("rtf-error", true);
@@ -192,13 +201,18 @@ d3.selection.prototype.theFuckError = function(thefuck) {
     .attr("fill", "#f07070");
 
   // Draw error message
-  svg.append("text")
-    .attr("x", svg.attr("width") / 2)
-    .attr("y", svg.attr("height") / 2)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "1.2em")
-    .attr("fill", "#a00000")
-    .text(thefuck.settings.message);
+  let messages = thefuck.settings.message;
+  if (typeof thefuck.settings.message === 'string') {
+    messages = [thefuck.settings.message];
+  }
+  svg.selectAll("text").data(messages).enter()
+      .append("text")
+      .attr("x", svg.attr("width") / 2)
+      .attr("y", function(d, i) { return (i + 1) * MSG_H; })
+      .attr("text-anchor", "middle")
+      .attr("font-size", "1.2em")
+      .attr("fill", "#a00000")
+      .text(function(d) { return d; });
 };
 
 // Load data
@@ -209,14 +223,22 @@ d3.selectAll(".render-the-fuck").each(function() {
   // Common settings
   d3.select(this).attr("style", "border: 1px solid #ddd; border-radius: 8px;");
 
+  // To save validation errors.
+  let vdErrors = [];
+
   // Bind and Render
   switch (thefuck.wtf) {
     case "timeline":
-      d3.select(this).theFuckTimeline(thefuck);
+      vdErrors = validate(thefuck, schema).errors;
+      if (vdErrors.length === 0) {
+        d3.select(this).theFuckTimeline(thefuck);
+      }
       break;
+    // An error occured at back-end.
     case "error":
       d3.select(this).theFuckError(thefuck);
       break;
+    // Unrecognize what the fuck.
     default:
       d3.select(this).theFuckError({
         "wtf": "error",
@@ -224,5 +246,19 @@ d3.selectAll(".render-the-fuck").each(function() {
           "message": "Unrecognize what the fuck."
         }
       });
+  }
+
+  // Display validation errors.
+  if (vdErrors.length > 0) {
+    const vdMsg = [];
+    for (const err of vdErrors) {
+      vdMsg.push(err.property + ' ' + err.message);
+    }
+    d3.select(this).theFuckError({
+      "wtf": "error",
+      "settings": {
+        "message": vdMsg
+      }
+    });
   }
 });

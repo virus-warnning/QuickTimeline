@@ -25,6 +25,7 @@
     "jsonschema": "1.1.1",
     "d3": "",
     "babel-cli": "6.9.0",
+    "babel-preset-es2015": "",
     "babel-preset-es2015-script": "",
     "browserify": ""
   }
