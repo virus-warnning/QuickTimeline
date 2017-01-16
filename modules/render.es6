@@ -177,7 +177,6 @@ d3.selection.prototype.theFuckTimeline = function(thefuck) {
 
 d3.selection.prototype.theFuckError = function(thefuck) {
   const svg = this;
-
   const MSG_H = 25;
 
   let msgCount = 1;
@@ -206,13 +205,13 @@ d3.selection.prototype.theFuckError = function(thefuck) {
     messages = [thefuck.settings.message];
   }
   svg.selectAll("text").data(messages).enter()
-      .append("text")
-      .attr("x", svg.attr("width") / 2)
-      .attr("y", function(d, i) { return (i + 1) * MSG_H; })
-      .attr("text-anchor", "middle")
-      .attr("font-size", "1.2em")
-      .attr("fill", "#a00000")
-      .text(function(d) { return d; });
+    .append("text")
+    .attr("x", svg.attr("width") / 2)
+    .attr("y", function(d, i) { return (i + 1) * MSG_H; })
+    .attr("text-anchor", "middle")
+    .attr("font-size", "1.2em")
+    .attr("fill", "#a00000")
+    .text(function(d) { return d; });
 };
 
 // Load data
@@ -252,7 +251,8 @@ d3.selectAll(".render-the-fuck").each(function() {
   if (vdErrors.length > 0) {
     const vdMsg = [];
     for (const err of vdErrors) {
-      vdMsg.push(err.property + ' ' + err.message);
+      const n = err.property;
+      vdMsg.push(n.charAt(0).toUpperCase() + n.slice(1) + ' ' + err.message);
     }
     d3.select(this).theFuckError({
       "wtf": "error",
