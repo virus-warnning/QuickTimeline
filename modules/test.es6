@@ -5,22 +5,22 @@
  * - preset: es2015
  */
 
-import jsonfile from 'jsonfile';
-import { validate } from 'jsonschema';
+import jsonfile from "jsonfile";
+import { validate } from "jsonschema";
 
-const WTF = 'timeline';
-const PATH = '..';
-const SCHEMA_FILE = PATH + '/schemas/' + WTF + '.schema.json';
-const DATA_FILE = PATH + '/examples/' + WTF + '.tfj';
+const WTF = "timeline";
+const PATH = "..";
+const SCHEMA_FILE = PATH + "/schemas/" + WTF + ".schema.json";
+const DATA_FILE = PATH + "/examples/" + WTF + ".tfj";
 
-new Promise((resolve, reject) => {
+new Promise((resolve) => {
   jsonfile.readFile(SCHEMA_FILE, (err, schema) => {
     if (err === null) {
-      resolve(schema)
+      resolve(schema);
     }
   });
 }).then((schema) => {
-  return new Promise((resolve, rejcet) => {
+  return new Promise((resolve) => {
     jsonfile.readFile(DATA_FILE, (err, data) => {
       if (err === null) {
         resolve({
@@ -36,10 +36,10 @@ new Promise((resolve, reject) => {
   const result = validate(data, schema);
 
   if (result.errors.length == 0) {
-    console.log('Passed!');
+    console.log("Passed!");
   } else {
     for (const err of result.errors) {
-      console.log(err.property + ' ' + err.message);
+      console.log(err.property + " " + err.message);
     }
   }
 });

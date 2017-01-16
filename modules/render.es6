@@ -1,7 +1,15 @@
 // Don't use import statement in script mode
-const d3 = require('d3');
-const validate = require('jsonschema').validate;
-const schema = require('../schemas/timeline.schema.json');
+const d3 = require("d3");
+const validate = require("jsonschema").validate;
+const schema = require("../schemas/timeline.schema.json");
+
+// TypeError: Cannot read property 'selection' of undefined.
+// (d3 will become _d after babelified.)
+/*
+import d3 from "d3";
+import { validate } from "jsonschema";
+import schema from "../schemas/timeline.schema.json";
+*/
 
 // The fuck timelime
 d3.selection.prototype.theFuckTimeline = function(thefuck) {
@@ -180,7 +188,7 @@ d3.selection.prototype.theFuckError = function(thefuck) {
   const MSG_H = 25;
 
   let msgCount = 1;
-  if (typeof thefuck.settings.message !== 'string') {
+  if (typeof thefuck.settings.message !== "string") {
     msgCount = thefuck.settings.message.length;
   }
   const h = MSG_H * (msgCount + 0.6);
@@ -201,7 +209,7 @@ d3.selection.prototype.theFuckError = function(thefuck) {
 
   // Draw error message
   let messages = thefuck.settings.message;
-  if (typeof thefuck.settings.message === 'string') {
+  if (typeof thefuck.settings.message === "string") {
     messages = [thefuck.settings.message];
   }
   svg.selectAll("text").data(messages).enter()
@@ -252,7 +260,7 @@ d3.selectAll(".render-the-fuck").each(function() {
     const vdMsg = [];
     for (const err of vdErrors) {
       const n = err.property;
-      vdMsg.push(n.charAt(0).toUpperCase() + n.slice(1) + ' ' + err.message);
+      vdMsg.push(n.charAt(0).toUpperCase() + n.slice(1) + " " + err.message);
     }
     d3.select(this).theFuckError({
       "wtf": "error",

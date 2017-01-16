@@ -1,0 +1,23 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+    "indent": [ "error", 2, { "SwitchCase": 1 } ],
+    "quotes": [ "error", "double" ],
+    "semi": [ "error", "always" ],
+    "no-console": 0,
+    "linebreak-style": [ "error", "unix" ]
+  },
+  "globals": {
+    "d3": true,
+    "require": true,
+    "THE_FUCK_STYLES": true
+  }
+}
