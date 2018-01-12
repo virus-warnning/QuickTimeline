@@ -23,18 +23,16 @@
 	"ResourceModules": {
 		"ext.renderthefuck.all": {
 			"scripts": [
-				"styles.def.js",
-				"styles.timeline.js",
-				"render.min.js"
+				"modules/target/render.min.js"
 			],
 			"styles": [
-				"timeline.min.css"
+				"modules/target/timeline.min.css"
 			]
 		}
 	},
 	"ResourceFileModulePaths": {
-		"localBasePath": "modules",
-		"remoteExtPath": "RenderTheFuck/modules"
+		"localBasePath": "",
+		"remoteExtPath": "RenderTheFuck"
 	},
 	"manifest_version": 1
 }

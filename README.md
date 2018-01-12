@@ -16,10 +16,13 @@ yarn lint-json | Lint examples/*.tfj
 
 # Build steps
 ```
-             browserify                uglify
-render.es6 --------------> render.js ----------> render.min.js
+               browserify                uglify
+render.es6   --------------> render.js ----------> render.min.js
+timeline.es6 -----|
+stack.es6    -----|
+error.es6    -----+
 
-
-               cssmin
-timeline.css ----------> timeline.min.css
+               cssmin                       genils.php
+timeline.css ----------> timeline.min.css --------------> styles.timeline.js
+stack.css                stack.min.css                    styles.stack.js
 ```

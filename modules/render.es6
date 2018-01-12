@@ -1,6 +1,5 @@
 // TypeError: Cannot read property 'selection' of undefined.
 // (d3 will become _d after babelified.)
-
 const d3 = require("d3");
 
 // Validation tool

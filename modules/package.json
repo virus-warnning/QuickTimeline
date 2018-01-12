@@ -4,22 +4,13 @@
   "description": "A MediaWiki extension.",
   "author": "Raymond Wu",
   "private": true,
-  "babel": {
-    "presets": [
-      ["env", {
-        "targets": {
-          "browsers": ["ie >= 9"]
-        }
-      }]
-    ]
-  },
   "scripts": {
     "build": "yarn lint && yarn browserify && yarn uglify && yarn clean",
     "lint": "eslint --ext es6 .",
     "browserify": "browserify render.es6 -o render.js -t babelify",
-    "uglify": "uglifyjs render.js -c -o render.min.js",
+    "uglify": "uglifyjs render.js -c -o target/render.min.js",
     "clean": "rm -f render.js",
-    "cssmin": "cssmin timeline.css > timeline.min.css",
+    "cssmin": "cssmin css/timeline.css > target/timeline.min.css",
     "lint-json": "jsonlint examples/stack.tfj -q -c"
   },
   "devDependencies": {
@@ -33,5 +24,37 @@
     "jsonschema": "1.1.1",
     "uglify-js": "2.7.5",
     "babel-preset-env": "1.6.1"
+  },
+  "babel": {
+    "presets": [
+      ["env", {
+        "targets": {
+          "browsers": ["ie >= 9"]
+        }
+      }]
+    ]
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "env": {
+      "es6": true,
+      "browser": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+      "indent": [ "error", 2, { "SwitchCase": 1 } ],
+      "quotes": [ "error", "double" ],
+      "semi": [ "error", "always" ],
+      "no-console": 0,
+      "linebreak-style": [ "error", "unix" ]
+    },
+    "globals": {
+      "d3": true,
+      "require": true,
+      "THE_FUCK_STYLES": true
+    }
   }
 }
