@@ -1,0 +1,41 @@
+{
+  "wtf": "stack",
+  "settings": {
+    "title": "汽車工業"
+  },
+  "layers": [
+    {
+      "items": [
+        { "name": "汽車工業" }
+      ]
+    },
+    {
+      "items": [
+        { "name": "引擎" },
+        { "name": "變速箱" }
+      ]
+    },
+    {
+      "items": [
+        { "name": "內燃機", "parent": 0 },
+        { "name": "混合動力內燃機", "parent": 0 },
+        { "name": "電動馬達", "parent": 0 },
+        { "name": "手動變速箱", "parent": 1 },
+        { "name": "自動變速箱", "parent": 1 }
+      ]
+    },
+    {
+      "items": [
+        { "name": "汽油內燃機", "parent": 0 },
+        { "name": "柴油內燃機", "parent": 0 },
+        { "name": "阿金森循環內燃機", "parent": 1 },
+        { "name": "純手動變速箱", "parent": 3 },
+        { "name": "單離合器自手排變速箱", "parent": 3 },
+        { "name": "雙離合器自手排變速箱", "parent": 3 },
+        { "name": "液壓自動變速箱", "parent": 4 },
+        { "name": "無段變速箱", "parent": 4 },
+        { "name": "行星齒輪", "parent": 4 }
+      ]
+    }
+  ]
+}

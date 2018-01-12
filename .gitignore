@@ -1,5 +1,5 @@
 # Node packages
-node_modules
+modules/node_modules
 
 # PHP packages
 vendor

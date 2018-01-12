@@ -57,7 +57,7 @@ class RenderTheFuck
 		}
 
 		$BASE = __DIR__;
-		$AVAILABLE_EXAMPLES = [ 'timeline', 'malicious' ];
+		$AVAILABLE_EXAMPLES = [ 'timeline', 'malicious', 'stack' ];
 
 		// Check input for security concern.
 		$svgw = self::getIntValue( $param, 'width', 400 );
@@ -66,7 +66,7 @@ class RenderTheFuck
 
 		// Decode and encode the json string to ensure it's well-formated.
 		if ( isset( $param['example'] ) && in_array( $param['example'], $AVAILABLE_EXAMPLES ) ) {
-			$file = sprintf( '%s/examples/%s.tfj', $BASE, $param['example'] );
+			$file = sprintf( '%s/modules/examples/%s.tfj', $BASE, $param['example'] );
 			$exampleCode = file_get_contents( $file );
 			$json = json_encode( json_decode( $exampleCode ) );
 		} else {
@@ -96,7 +96,7 @@ class RenderTheFuck
 			$styles = 'width:90%; height:250px; overflow-y: scroll; ' .
 				'border: 1px solid #a7d7f9; border-radius: 5px;';
 
-			$output .= '<p>Source code of timeline example:</p>';
+			$output .= '<p>Source code of ' . $param['example'] . ' example:</p>';
 			$output .= '<div style="' . $styles . '">';
 			$output .= '<pre style="margin: 10px;">' . $exampleCode . '</pre>';
 			$output .= '</div>';

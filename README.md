@@ -13,3 +13,13 @@ yarn uglify | build *.min.js
 yarn cssmin | build *.min.css
 yarn lint-js | Lint *.js
 yarn lint-json | Lint examples/*.tfj
+
+# Build steps
+```
+             browserify                uglify
+render.es6 --------------> render.js ----------> render.min.js
+
+
+               cssmin
+timeline.css ----------> timeline.min.css
+```
