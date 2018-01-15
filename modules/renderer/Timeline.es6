@@ -147,27 +147,4 @@ export default function(thefuck) {
     .attr("x", svg.attr("width")/2)
     .attr("y", svg.attr("height")-20)
     .text(thefuck.settings.title);
-
-  // Draw download link
-  /*
-  const ftid  = svg.attr("id") + "-footer";
-  const style = THE_FUCK_STYLES["timeline"];
-  const body  = svg.html().replace("<defs></defs>", "<defs><style type=\"text/css\">" + style + "</style></defs>");
-  const blob  = new Blob(
-    [
-      "<?xml version=\"1.0\"?>",
-      "<svg xmlns=\"http://www.w3.org/2000/svg\">",
-      body,
-      "</svg>"
-    ],
-    {"type": "image/xml+svg"}
-  );
-  const link = window.URL.createObjectURL(blob);
-
-  // TODO: Donnot use d3 here.
-  d3.select("#"+ftid).append("a")
-    .attr("href", link)
-    .attr("download", svg.attr("id") + ".svg")
-    .text("Download");
-  */
 }

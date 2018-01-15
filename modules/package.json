@@ -5,12 +5,17 @@
   "author": "Raymond Wu",
   "private": true,
   "scripts": {
-    "build": "yarn lint && yarn browserify && yarn uglify && yarn clean",
+    "build": "yarn build-css && yarn build-js",
+    "build-js": "yarn lint && yarn browserify && yarn uglify && yarn clean",
     "lint": "eslint --ext es6 .",
     "browserify": "browserify render.es6 -o render.js -t babelify",
     "uglify": "uglifyjs render.js -c -o target/render.min.js",
     "clean": "rm -f render.js",
-    "cssmin": "cssmin css/timeline.css > target/timeline.min.css",
+    "build-css": "yarn cssmin && babel-node genstyles.es6 > styles.es6",
+    "cssmin": "yarn cssmin1 && yarn cssmin2 && yarn cssmin3",
+    "cssmin1": "cssmin css/common.css > target/common.min.css",
+    "cssmin2": "cssmin css/stack.css > target/stack.min.css",
+    "cssmin3": "cssmin css/timeline.css > target/timeline.min.css",
     "lint-json": "jsonlint examples/stack.tfj -q -c"
   },
   "devDependencies": {

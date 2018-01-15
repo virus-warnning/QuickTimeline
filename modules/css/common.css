@@ -1,0 +1,10 @@
+.render-the-fuck > text.title {
+  fill: #000000;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-anchor: middle;
+}
+
+.render-the-fuck > rect.bg {
+  fill: #f7f7f7;
+}

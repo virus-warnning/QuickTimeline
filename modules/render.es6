@@ -10,43 +10,49 @@ import schema from "./schemas/timeline.schema.json";
 import TheFuckTimeline from "./renderer/Timeline.es6";
 import TheFuckStack from "./renderer/Stack.es6";
 import TheFuckError from "./renderer/Error.es6";
-
 d3.selection.prototype.theFuckTimeline = TheFuckTimeline;
 d3.selection.prototype.theFuckStack = TheFuckStack;
 d3.selection.prototype.theFuckError = TheFuckError;
 
-// Load data
+// Inline style
+import TheFuckStyles from "./styles.es6";
+
+// Scan hook points (CSS class render-the-fuck)
 d3.selectAll(".render-the-fuck").each(function() {
-  const id = d3.select(this).attr("id");
+  const svg = d3.select(this);
+  const id  = svg.attr("id");
   const thefuck = window.RENDER_THE_FUCK[id];
 
   // Common settings
-  d3.select(this).attr("style", "border: 1px solid #ddd; border-radius: 8px;");
+  svg.attr("style", "border: 1px solid #ddd; border-radius: 8px;");
 
   // To save validation errors.
   let vdErrors = [];
+  let hasError = false;
 
   // Bind and Render
   switch (thefuck.wtf) {
     case "timeline":
       vdErrors = validate(thefuck, schema).errors;
       if (vdErrors.length === 0) {
-        d3.select(this).theFuckTimeline(thefuck);
+        svg.theFuckTimeline(thefuck);
       }
       break;
     case "stack":
       // vdErrors = validate(thefuck, schema).errors;
       // if (vdErrors.length === 0) {
-      d3.select(this).theFuckStack(thefuck);
+      svg.theFuckStack(thefuck);
       // }
       break;
     // An error occured at back-end.
     case "error":
-      d3.select(this).theFuckError(thefuck);
+      hasError = true;
+      svg.theFuckError(thefuck);
       break;
     // Unrecognize what the fuck.
     default:
-      d3.select(this).theFuckError({
+      hasError = true;
+      svg.theFuckError({
         "wtf": "error",
         "settings": {
           "message": "Unrecognize what the fuck."
@@ -54,18 +60,46 @@ d3.selectAll(".render-the-fuck").each(function() {
       });
   }
 
-  // Display validation errors.
   if (vdErrors.length > 0) {
+    // Display validation errors.
     const vdMsg = [];
     for (const err of vdErrors) {
       const n = err.property;
       vdMsg.push(n.charAt(0).toUpperCase() + n.slice(1) + " " + err.message);
     }
-    d3.select(this).theFuckError({
+    svg.theFuckError({
       "wtf": "error",
       "settings": {
-        "message": vdMsg
+        "message": vdMsg + "fuck"
       }
     });
+    hasError = true;
+  }
+
+  if (!hasError) {
+    // Create BLOB
+    const ftid  = id + "-footer";
+    const style = TheFuckStyles["common"] + TheFuckStyles[thefuck.wtf];
+    const body  = svg.html();
+    const w     = svg.attr("width");
+    const h     = svg.attr("height");
+    const blob  = new Blob(
+      [
+        "<?xml version=\"1.0\"?>",
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{W}\" height=\"{H}\">"
+          .replace("{W}", w)
+          .replace("{H}", h),
+        body.replace("<defs></defs>", "<defs><style type=\"text/css\">" + style + "</style></defs>"),
+        "</svg>"
+      ],
+      {"type": "image/xml+svg"}
+    );
+    const link = window.URL.createObjectURL(blob);
+
+    // Create download link.
+    d3.select("#" + ftid).append("a")
+      .attr("href", link)
+      .attr("download", id + ".svg")
+      .text("Download");
   }
 });
