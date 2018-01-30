@@ -61,7 +61,7 @@ class RenderTheFuck
 
 		// Check input for security concern.
 		$svgw = self::getIntValue( $param, 'width', 400 );
-		$svgh = self::getIntValue( $param, 'height', 300 );
+		$svgh = self::getIntValue( $param, 'height', 200 );
 		$elid = sprintf( 'thefuck-%02d', self::$rank++ );
 
 		// Decode and encode the json string to ensure it's well-formated.

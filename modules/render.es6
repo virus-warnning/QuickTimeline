@@ -5,7 +5,12 @@ const d3 = require("d3");
 
 // Validation tool
 import { validate } from "jsonschema";
-import schema from "./schemas/timeline.schema.json";
+import StackSchema from "./schemas/stack.schema.json";
+import TimelineSchema from "./schemas/timeline.schema.json";
+const WtfSchema = {
+  stack: StackSchema,
+  timeline: TimelineSchema
+};
 
 // Renderer functions
 import TheFuckTimeline from "./renderer/Timeline.es6";
@@ -34,16 +39,16 @@ d3.selectAll(".render-the-fuck").each(function() {
   // Bind and Render
   switch (thefuck.wtf) {
     case "timeline":
-      vdErrors = validate(thefuck, schema).errors;
+      vdErrors = validate(thefuck, WtfSchema[thefuck.wtf]).errors;
       if (vdErrors.length === 0) {
         svg.theFuckTimeline(thefuck);
       }
       break;
     case "stack":
-      // vdErrors = validate(thefuck, schema).errors;
-      // if (vdErrors.length === 0) {
-      svg.theFuckStack(thefuck);
-      // }
+      vdErrors = validate(thefuck, WtfSchema[thefuck.wtf]).errors;
+      if (vdErrors.length === 0) {
+        svg.theFuckStack(thefuck);
+      }
       break;
     // An error occured at back-end.
     case "error":
@@ -71,7 +76,7 @@ d3.selectAll(".render-the-fuck").each(function() {
     svg.theFuckError({
       "wtf": "error",
       "settings": {
-        "message": vdMsg + "fuck"
+        "message": vdMsg
       }
     });
     hasError = true;

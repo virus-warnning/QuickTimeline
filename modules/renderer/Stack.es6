@@ -47,7 +47,7 @@ export default function(thefuck) {
       const labelGroup = svg.append("g").classed("labelGroup", true);
 
       // Draw empty items to rotate color.
-      for (let i = 0; i < layerIdx + parentIdx; i++) {
+      for (let i = 0; i < (layerIdx + parentIdx) % 5; i++) {
         itemGroup.append("rect");
       }
 
