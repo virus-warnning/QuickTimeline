@@ -1,0 +1,6 @@
+/* CSS for line */
+
+.render-the-fuck.rtf-line > line {
+  stroke: #000000;
+  stroke-width: 1.0;
+}

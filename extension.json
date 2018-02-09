@@ -27,6 +27,7 @@
 			],
 			"styles": [
 				"modules/target/common.min.css",
+        "modules/target/line.min.css",
         "modules/target/stack.min.css",
         "modules/target/timeline.min.css"
 			]

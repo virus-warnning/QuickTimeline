@@ -13,14 +13,6 @@ export default function(thefuck) {
   };
 
   svg.classed("rtf-stack", true);
-  svg.classed("rtf-theme-default", true);
-
-  // Draw background
-  svg.append("rect").classed("bg", true)
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", "100%")
-    .attr("height", "100%");
 
   let parents = [{
     left: MARGIN,
@@ -74,11 +66,4 @@ export default function(thefuck) {
 
     parents = nextParents;
   });
-
-  // Draw graph title
-  svg.append("text")
-    .classed("title", true)
-    .attr("x", SVG_WIDTH / 2)
-    .attr("y", SVG_HEIGHT - MARGIN)
-    .text(thefuck.settings.title);
 }

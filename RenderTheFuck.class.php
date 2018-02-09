@@ -57,7 +57,7 @@ class RenderTheFuck
 		}
 
 		$BASE = __DIR__;
-		$AVAILABLE_EXAMPLES = [ 'timeline', 'malicious', 'stack' ];
+		$AVAILABLE_EXAMPLES = [ 'line', 'stack', 'timeline', 'malicious' ];
 
 		// Check input for security concern.
 		$svgw = self::getIntValue( $param, 'width', 400 );

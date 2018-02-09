@@ -82,14 +82,6 @@ export default function(thefuck) {
 
   // Mark class for styling
   svg.classed("rtf-timeline", true);
-  svg.classed("rtf-theme-default", true);
-
-  // Draw background
-  svg.append("rect").classed("bg", true)
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", "100%")
-    .attr("height", "100%");
 
   // Draw base bar
   svg.append("g").classed("bars-base", true).selectAll("rect").data(thefuck.lines).enter()
@@ -140,11 +132,4 @@ export default function(thefuck) {
     .attr("y", titleYFormula)
     .attr("text-anchor", titleAnchorFormula)
     .text(titleWikiFormula);
-
-  // Draw graph title
-  svg.append("text")
-    .classed("title", true)
-    .attr("x", svg.attr("width")/2)
-    .attr("y", svg.attr("height")-20)
-    .text(thefuck.settings.title);
 }

@@ -7,4 +7,7 @@
 
 .render-the-fuck > rect.bg {
   fill: #f7f7f7;
+  stroke: #b0b0b0;
+  stroke-width: 1.5;
+  stroke-linecap: round;
 }

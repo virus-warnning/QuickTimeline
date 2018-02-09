@@ -1,87 +1,79 @@
-// TypeError: Cannot read property 'selection' of undefined.
-// (d3 will become _d after babelified.)
-// import d3 from "d3";
-const d3 = require("d3");
-
-// Validation tool
+// Dependencies
+import * as d3 from "d3";
 import { validate } from "jsonschema";
+
+// Validation schemas
+import LineSchema from "./schemas/line.schema.json";
 import StackSchema from "./schemas/stack.schema.json";
 import TimelineSchema from "./schemas/timeline.schema.json";
-const WtfSchema = {
+const WTF_SCHEMAS = {
+  line: LineSchema,
   stack: StackSchema,
   timeline: TimelineSchema
 };
 
 // Renderer functions
-import TheFuckTimeline from "./renderer/Timeline.es6";
-import TheFuckStack from "./renderer/Stack.es6";
+import TheFuckCommon from "./renderer/Common.es6";
 import TheFuckError from "./renderer/Error.es6";
-d3.selection.prototype.theFuckTimeline = TheFuckTimeline;
-d3.selection.prototype.theFuckStack = TheFuckStack;
-d3.selection.prototype.theFuckError = TheFuckError;
+import TheFuckLine from "./renderer/Line.es6";
+import TheFuckStack from "./renderer/Stack.es6";
+import TheFuckTimeline from "./renderer/Timeline.es6";
+const WTF_RENDERERS = {
+  error: TheFuckError,
+  line: TheFuckLine,
+  stack: TheFuckStack,
+  timeline: TheFuckTimeline
+};
 
 // Inline style
 import TheFuckStyles from "./styles.es6";
+
+// Global parameters for all renderers.
+const WTF_PARAMS = {
+  margin: 20
+};
 
 // Scan hook points (CSS class render-the-fuck)
 d3.selectAll(".render-the-fuck").each(function() {
   const svg = d3.select(this);
   const id  = svg.attr("id");
-  const thefuck = window.RENDER_THE_FUCK[id];
-
-  // Common settings
-  svg.attr("style", "border: 1px solid #ddd; border-radius: 8px;");
-
-  // To save validation errors.
-  let vdErrors = [];
+  let thefuck = window.RENDER_THE_FUCK[id];
   let hasError = false;
 
-  // Bind and Render
-  switch (thefuck.wtf) {
-    case "timeline":
-      vdErrors = validate(thefuck, WtfSchema[thefuck.wtf]).errors;
-      if (vdErrors.length === 0) {
-        svg.theFuckTimeline(thefuck);
-      }
-      break;
-    case "stack":
-      vdErrors = validate(thefuck, WtfSchema[thefuck.wtf]).errors;
-      if (vdErrors.length === 0) {
-        svg.theFuckStack(thefuck);
-      }
-      break;
-    // An error occured at back-end.
-    case "error":
+  const AVAILABLE_WTFS = ["line", "stack", "timeline"];
+  if (AVAILABLE_WTFS.indexOf(thefuck.wtf) !== -1) {
+    const vdErrors = validate(thefuck, WTF_SCHEMAS[thefuck.wtf]).errors;
+    if (vdErrors.length > 0) {
+      const vdMsg = vdErrors.map(function(err) {
+        const n = err.property;
+        return n.charAt(0).toUpperCase() + n.slice(1) + " " + err.message;
+      });
+
       hasError = true;
-      svg.theFuckError(thefuck);
-      break;
-    // Unrecognize what the fuck.
-    default:
-      hasError = true;
-      svg.theFuckError({
+      thefuck = {
+        "wtf": "error",
+        "settings": {
+          "message": vdMsg
+        }
+      };
+    }
+  } else {
+    hasError = true;
+    if (thefuck.wtf !== "error") {
+      thefuck = {
         "wtf": "error",
         "settings": {
           "message": "Unrecognize what the fuck."
         }
-      });
-  }
-
-  if (vdErrors.length > 0) {
-    // Display validation errors.
-    const vdMsg = [];
-    for (const err of vdErrors) {
-      const n = err.property;
-      vdMsg.push(n.charAt(0).toUpperCase() + n.slice(1) + " " + err.message);
+      };
     }
-    svg.theFuckError({
-      "wtf": "error",
-      "settings": {
-        "message": vdMsg
-      }
-    });
-    hasError = true;
   }
 
+  // Render the fuck.
+  TheFuckCommon.call(svg, thefuck, WTF_PARAMS);
+  WTF_RENDERERS[thefuck.wtf].call(svg, thefuck, WTF_PARAMS);
+
+  // Render download link.
   if (!hasError) {
     // Create BLOB
     const ftid  = id + "-footer";
@@ -102,7 +94,7 @@ d3.selectAll(".render-the-fuck").each(function() {
     );
     const link = window.URL.createObjectURL(blob);
 
-    // Create download link.
+    // Create <a> element.
     d3.select("#" + ftid).append("a")
       .attr("href", link)
       .attr("download", id + ".svg")
