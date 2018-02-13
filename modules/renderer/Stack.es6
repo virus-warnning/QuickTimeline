@@ -1,5 +1,5 @@
 // The fuck stack
-export default function(thefuck) {
+export default function(d3, thefuck, WTF_PARAMS) {
   const svg = this;
   const SVG_WIDTH = svg.attr("width");
   const SVG_HEIGHT = svg.attr("height");

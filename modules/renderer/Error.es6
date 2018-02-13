@@ -1,4 +1,4 @@
-export default function(thefuck) {
+export default function(d3, thefuck, WTF_PARAMS) {
   const svg = this;
   const MSG_H = 25;
 

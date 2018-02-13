@@ -1,4 +1,4 @@
-export default function(thefuck) {
+export default function(d3, thefuck, WTF_PARAMS) {
   const svg = this;
   const AVAILABLE_SCALE = [10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10];
 

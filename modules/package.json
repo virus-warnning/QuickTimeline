@@ -10,7 +10,7 @@
     "lint": "eslint --ext es6 .",
     "browserify": "browserify render.es6 -o render.js -t babelify",
     "uglify": "uglifyjs render.js -c -o target/render.min.js",
-    "clean": "rm -f render.js",
+    "clean": "rm -f render.js styles.es6",
     "build-css": "yarn cssmin && babel-node genstyles.es6 > styles.es6",
     "cssmin": "yarn cssmin1 && yarn cssmin2 && yarn cssmin3 && yarn cssmin4",
     "cssmin1": "cssmin css/common.css > target/common.min.css",
@@ -55,7 +55,8 @@
       "quotes": [ "error", "double" ],
       "semi": [ "error", "always" ],
       "no-console": 0,
-      "linebreak-style": [ "error", "unix" ]
+      "linebreak-style": [ "error", "unix" ],
+      "no-unused-vars": ["error", { "argsIgnorePattern": "d3|thefuck|WTF_PARAMS" }]
     },
     "globals": {
       "d3": true,

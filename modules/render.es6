@@ -70,8 +70,8 @@ d3.selectAll(".render-the-fuck").each(function() {
   }
 
   // Render the fuck.
-  TheFuckCommon.call(svg, thefuck, WTF_PARAMS);
-  WTF_RENDERERS[thefuck.wtf].call(svg, thefuck, WTF_PARAMS);
+  TheFuckCommon.call(svg, d3, thefuck, WTF_PARAMS);
+  WTF_RENDERERS[thefuck.wtf].call(svg, d3, thefuck, WTF_PARAMS);
 
   // Render download link.
   if (!hasError) {
