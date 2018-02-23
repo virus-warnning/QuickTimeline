@@ -16,6 +16,10 @@
         "title": { "type": "string", "minLength": 1 }
       }
     },
+    "labels": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
     "lines": {
       "type": "array",
       "items": {
@@ -25,14 +29,7 @@
           "name": { "type": "string" },
           "data": {
             "type": "array",
-            "items": {
-              "type": "object",
-              "required": [ "label", "value" ],
-            	"properties": {
-            	  "label": { "type": "string" },
-            	  "value": { "type": "number" }
-            	}
-            }
+            "items": { "type": "number" }
           }
         }
       }
