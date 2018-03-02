@@ -1,8 +1,25 @@
-// Dependencies
-import * as d3 from "d3";
-import { validate } from "jsonschema";
+// d3.js
+// Bundle size with: (tested at 2018-03-02)
+// +------------------------------------+
+// |    import    | compiled | uglified |
+// |--------------|----------|----------|
+// |  all d3 APIs |   830453 |   538174 |
+// | used d3 APIs |   199245 |   125715 |
+// +------------------------------------+
+// import * as d3 from "d3";
+import { select as d3Select } from "d3-selection";
+import { selectAll as d3SelectAll } from "d3-selection";
+import { line as d3Line } from "d3-shape";
+import { path as d3Path } from "d3-path";
+const d3 = {
+  select: d3Select,
+  selectAll: d3SelectAll,
+  line: d3Line,
+  path: d3Path
+};
 
 // Validation schemas
+import { validate } from "jsonschema";
 import LineSchema from "./schemas/line.schema.json";
 import StackSchema from "./schemas/stack.schema.json";
 import TimelineSchema from "./schemas/timeline.schema.json";
