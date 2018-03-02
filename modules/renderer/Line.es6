@@ -3,16 +3,20 @@ export default function(d3, thefuck, P) {
   const svg = this;
   svg.classed("rtf-line", true);
 
-  // Draw legends.
-  const legendCicleR = 7;
+  const legendCircleR = 7;
   const legendTextHeight = 12;
+  const focusedPointR = 4;
+  const focusedLabelHeight = 20;
+  const xScaleTextHeight = 11;
+
+  // Draw legends.
   const legendIcon = svg.append("g").classed("legendIcon", true);
   const legendText = svg.append("g").classed("legendText", true);
   const fnLegendY = function(d, i) { return i * 25; };
   legendIcon.selectAll("circle").data(thefuck.lines).enter().append("circle")
     .attr("cx", 0)
     .attr("cy", fnLegendY)
-    .attr("r", legendCicleR);
+    .attr("r", legendCircleR);
   legendText.selectAll("text").data(thefuck.lines).enter().append("text")
     .attr("x", 0)
     .attr("y", fnLegendY)
@@ -21,9 +25,9 @@ export default function(d3, thefuck, P) {
   // Move legends to proper location.
   const legendTextWidth = P.fnMaxTextWidth(legendText);
   const textTx = svg.attr("width") - (P.margin + legendTextWidth);
-  const textTy = P.margin + legendTextHeight;
-  const iconTx = textTx - (legendCicleR + 5);
-  const iconTy = P.margin + legendCicleR;
+  const textTy = P.margin + focusedLabelHeight + P.textMargin + legendTextHeight;
+  const iconTx = textTx - (legendCircleR + 5);
+  const iconTy = P.margin + focusedLabelHeight + P.textMargin + legendCircleR;
   legendIcon.attr("transform", P.fnTranslate(iconTx, iconTy));
   legendText.attr("transform", P.fnTranslate(textTx, textTy));
 
@@ -55,9 +59,11 @@ export default function(d3, thefuck, P) {
   const uBound = Math.ceil(max / scale + 1) * scale;
 
   // Draw y scale
-  let origY = svg.attr("height") - (P.margin + P.titleHeight);
-  if (thefuck.settings.subtitle) origY -= P.subtitleHeight;
-  const chartHeight = origY - P.margin;
+  let origY = svg.attr("height") - (P.margin + P.titleHeight + xScaleTextHeight + P.textMargin);
+  if (thefuck.settings.subtitle) {
+    origY -= P.subtitleHeight;
+  }
+  const chartHeight = origY - P.margin - focusedLabelHeight - P.textMargin;
   const yRatio = chartHeight / (uBound - lBound);
   const valueToY = function(d) { return Math.floor((d - lBound) * yRatio); };
   const yScaleGroup = chart.append("g").classed("yscale", true);
@@ -82,19 +88,32 @@ export default function(d3, thefuck, P) {
   chart.attr("transform", P.fnCartesianCoord(origX, origY));
 
   // TODO: Draw x scale
-  const chartWidth = svg.attr("width") - P.margin * 2 - yScaleWidth - legendTextWidth - legendCicleR*2 - 5 - 5 - 10;
+  const usedWidth = [
+    P.margin,
+    yScaleWidth,
+    P.textMargin,
+    P.elementMargin,
+    legendCircleR * 2 + 1,
+    P.textMargin,
+    legendTextWidth,
+    P.margin
+  ];
+  const chartWidth = usedWidth.reduce(P.fnSub, svg.attr("width"));
   const xRatio = chartWidth / (thefuck.labels.length - 1);
   const xScaleGroup = chart.append("g").classed("xscale", true);
   const indices = [
     1,
     Math.floor(thefuck.labels.length / 2),
-    thefuck.labels.length - 1
+    thefuck.labels.length - 2
   ];
   xScaleGroup.selectAll("line").data(indices).enter().append("line")
     .attr("x1", function(d) { return d * xRatio; })
     .attr("y1", 0)
     .attr("x2", function(d) { return d * xRatio; })
     .attr("y2", 5);
+  xScaleGroup.selectAll("text").data(indices).enter().append("text")
+    .attr("transform", function(d) { return P.fnCartesianCoord(d * xRatio, - (xScaleTextHeight + P.textMargin)); })
+    .text(function(d) { return thefuck.labels[d]; });
 
   // Resize background
   chartBg
@@ -134,13 +153,13 @@ export default function(d3, thefuck, P) {
   const focusedLabel = focusedPosition.append("text").classed("focusedLabel", true)
     .attr("transform", "scale(1 -1)")
     .attr("x", 0)
-    .attr("y", 0);
+    .attr("y", -P.textMargin);
   const focusedPointGroup = focusedPosition.append("g").classed("focusedPoint", true);
   focusedPointGroup.selectAll("circle").data(thefuck.lines).enter()
     .append("circle")
-    .attr("r", 4);
+    .attr("r", focusedPointR);
   const focusedValueBorderGroup = focusedPosition.append("g").classed("focusedValueBorder", true)
-    .attr("transform", "translate(15 -12)");
+    .attr("transform", "translate(9 -12)");
   focusedValueBorderGroup.selectAll("rect").data(thefuck.lines).enter()
     .append("rect")
     .attr("x", 0)
@@ -150,7 +169,7 @@ export default function(d3, thefuck, P) {
     .attr("width", 50)
     .attr("height", 25);
   const focusedValueGroup = focusedPosition.append("g").classed("focusedValue", true)
-    .attr("transform", "translate(20 0) scale(1 -1)");
+    .attr("transform", "translate(14 0) scale(1 -1)");
   focusedValueGroup.selectAll("text").data(thefuck.lines).enter()
     .append("text")
     .attr("x", 0)
@@ -184,7 +203,9 @@ export default function(d3, thefuck, P) {
       })
       .text(function(d) { return d; });
 
-    // Avoid overlap
+    // TODO: Prevent border from overlaping
+
+    // Display
     focusedPosition.attr("visibility", "visible");
   };
   if (defaultFocusedPosition >= 0) {

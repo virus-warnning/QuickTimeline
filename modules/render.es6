@@ -48,6 +48,8 @@ import TheFuckStyles from "./styles.es6";
 // Global parameters for all renderers.
 const WTF_PARAMS = {
   margin: 15,
+  elementMargin: 10,
+  textMargin: 5,
   titleHeight: 24,
   subtitleHeight: 16,
   fnMaxTextWidth: (sel) => {
@@ -68,6 +70,9 @@ const WTF_PARAMS = {
   },
   fnValue: (d) => {
     return d;
+  },
+  fnSub: (a, b) => {
+    return a - b;
   }
 };
 

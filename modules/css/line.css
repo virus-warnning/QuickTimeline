@@ -20,13 +20,23 @@
   stroke-width: 1.5;
 }
 
+.render-the-fuck.rtf-line > g.chart > g.xscale > line,
 .render-the-fuck.rtf-line > g.chart > g.yscale > line {
   stroke: #000000;
   stroke-width: 1.5;
 }
 
+.render-the-fuck.rtf-line > g.chart > g.xscale > text,
 .render-the-fuck.rtf-line > g.chart > g.yscale > text {
   fill: #000000;
+  font-size: 90%;
+}
+
+.render-the-fuck.rtf-line > g.chart > g.xscale > text {
+  text-anchor: middle;
+}
+
+.render-the-fuck.rtf-line > g.chart > g.yscale > text {
   text-anchor: end;
 }
 
@@ -49,14 +59,12 @@
 
 .render-the-fuck.rtf-line > g.chart > g.focusedPosition > g.focusedPoint {
   fill: #ffffff;
-  stroke-opacity: 1.0;
   stroke-width: 2.0;
 }
 
 .render-the-fuck.rtf-line > g.chart > g.focusedPosition > g.focusedValueBorder {
   fill: #ffffff;
   fill-opacity: 0.5;
-  stroke-opacity: 1.0;
   stroke-width: 2.0;
 }
 
