@@ -142,7 +142,6 @@ export default function(d3, thefuck, P) {
   if (thefuck.settings.defaultIndex !== undefined) {
     defaultFocusedPosition = thefuck.settings.defaultIndex;
   }
-  let currentFocusedPosition = defaultFocusedPosition;
   const focusedPosition = chart.append("g").classed("focusedPosition", true)
     .attr("visibility", "hidden");
   const focusedAxis = focusedPosition.append("line").classed("focusedAxis", true)
@@ -169,14 +168,13 @@ export default function(d3, thefuck, P) {
     .attr("width", 50)
     .attr("height", 25);
   const focusedValueGroup = focusedPosition.append("g").classed("focusedValue", true)
-    .attr("transform", "translate(14 0) scale(1 -1)");
+    .attr("transform", "translate(14 -1) scale(1 -1)");
   focusedValueGroup.selectAll("text").data(thefuck.lines).enter()
     .append("text")
     .attr("x", 0)
     .attr("y", 0);
   const popFocusedAxis = function(index) {
     const focusedAxisX = Math.floor(index * xRatio);
-    const valueToY = function(d) { return Math.floor((d - lBound) * yRatio); };
     const values = thefuck.lines.map((line) => {
       return line.data[index];
     });
@@ -193,42 +191,63 @@ export default function(d3, thefuck, P) {
       .attr("cx", focusedAxisX)
       .attr("cy", valueToY);
 
-    focusedValueBorderGroup.selectAll("rect").data(values)
-      .attr("x", focusedAxisX)
-      .attr("y", valueToY);
+    // Draw value and border sequentially.
+    values.forEach((d, i) => {
+      const currBorder = focusedValueBorderGroup.select("rect:nth-child(N)".replace("N", i + 1));
+      const currValue  = focusedValueGroup.select("text:nth-child(N)".replace("N", i + 1));
+      const currY1 = valueToY(d);
+      const currY2 = valueToY(d) + 25;
 
-    focusedValueGroup.selectAll("text").data(values)
-      .attr("transform", function(d) {
-        return P.fnTranslate(focusedAxisX, -1 * valueToY(d));
-      })
-      .text(function(d) { return d; });
+      // Prevent border from overlapping.
+      let currX = focusedAxisX;
+      for (let n = i - 1; n >= 0; n--) {
+        const prevBorder = focusedValueBorderGroup.select("rect:nth-child(N)".replace("N", n + 1));
+        const prevY1 = parseInt(prevBorder.attr("y"));
+        const prevY2 = prevY1 + 25;
+        if (P.fnBetween(currY1, prevY1, prevY2) || P.fnBetween(currY2, prevY1, prevY2)) {
+          const prevX = parseInt(prevBorder.attr("x"));
+          const prevW = parseInt(prevBorder.attr("width"));
+          currX = prevX + prevW + P.textMargin;
+          break;
+        }
+      }
 
-    // TODO: Prevent border from overlaping
+      currBorder.attr("x", currX);
+      currBorder.attr("y", currY1);
+      currValue.attr("transform", P.fnTranslate(currX, -1 * valueToY(d)));
+      currValue.text(d);
+    });
 
     // Display
     focusedPosition.attr("visibility", "visible");
   };
+
   if (defaultFocusedPosition >= 0) {
     popFocusedAxis(defaultFocusedPosition);
   }
 
-  chartBg.on("mousemove", function() {
-    const index = Math.round((event.offsetX - P.margin) / xRatio);
+  let currentFocusedPosition = defaultFocusedPosition;
+  const eventReceiver = chart.append("rect").classed("eventReceiver", true)
+    .attr("width", chartWidth)
+    .attr("height", chartHeight);
+
+  eventReceiver.on("mousemove", function() {
+    const index = Math.round(d3.mouse(this)[0] / xRatio);
     if (index >= 0 && index < thefuck.labels.length) {
       currentFocusedPosition = index;
       popFocusedAxis(index);
     }
   });
-  chartBg.on("mouseleave", function() {
+
+  // Unexpected action occured.
+  eventReceiver.on("mouseleave", function() {
     currentFocusedPosition = defaultFocusedPosition;
-    setTimeout(function() {
-      if (currentFocusedPosition === defaultFocusedPosition) {
-        if (defaultFocusedPosition < 0) {
-          focusedPosition.attr("visibility", "hidden");
-        } else {
-          popFocusedAxis(defaultFocusedPosition);
-        }
+    if (currentFocusedPosition === defaultFocusedPosition) {
+      if (defaultFocusedPosition < 0) {
+        focusedPosition.attr("visibility", "hidden");
+      } else {
+        popFocusedAxis(defaultFocusedPosition);
       }
-    }, 1000);
+    }
   });
 }

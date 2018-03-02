@@ -14,6 +14,10 @@
   fill: #ffffff;
 }
 
+.render-the-fuck.rtf-line > g.chart > rect.eventReceiver {
+  fill-opacity: 0;
+}
+
 .render-the-fuck.rtf-line > g.chart > path.axis {
   fill: none;
   stroke: #000000;

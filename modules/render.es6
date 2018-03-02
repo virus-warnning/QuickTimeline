@@ -9,11 +9,13 @@
 // import * as d3 from "d3";
 import { select as d3Select } from "d3-selection";
 import { selectAll as d3SelectAll } from "d3-selection";
+import { mouse as d3Mouse } from "d3-selection";
 import { line as d3Line } from "d3-shape";
 import { path as d3Path } from "d3-path";
 const d3 = {
   select: d3Select,
   selectAll: d3SelectAll,
+  mouse: d3Mouse,
   line: d3Line,
   path: d3Path
 };
@@ -47,16 +49,21 @@ import TheFuckStyles from "./styles.es6";
 
 // Global parameters for all renderers.
 const WTF_PARAMS = {
+  // Common settings
   margin: 15,
   elementMargin: 10,
   textMargin: 5,
   titleHeight: 24,
   subtitleHeight: 16,
-  fnMaxTextWidth: (sel) => {
-    const allWidth = sel.selectAll("text").nodes().map((e) => {
-      return e.getBBox().width;
-    });
-    return Math.max.apply(null, allWidth);
+
+  // Common functions
+  fnValue: (d) => { return d; },
+  fnAdd: (a, b) => { return a + b; },
+  fnSub: (a, b) => { return a - b; },
+  fnBetween: (n, a, b) => {
+    const l = Math.max(a, b);
+    const s = Math.min(a, b);
+    return (n >= s && n <= l);
   },
   fnTranslate: (x, y) => {
     return "translate(X Y)"
@@ -68,11 +75,11 @@ const WTF_PARAMS = {
       .replace("X", x)
       .replace("Y", y);
   },
-  fnValue: (d) => {
-    return d;
-  },
-  fnSub: (a, b) => {
-    return a - b;
+  fnMaxTextWidth: (sel) => {
+    const allWidth = sel.selectAll("text").nodes().map((e) => {
+      return e.getBBox().width;
+    });
+    return Math.max.apply(null, allWidth);
   }
 };
 
