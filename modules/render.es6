@@ -47,7 +47,28 @@ import TheFuckStyles from "./styles.es6";
 
 // Global parameters for all renderers.
 const WTF_PARAMS = {
-  margin: 20
+  margin: 15,
+  titleHeight: 24,
+  subtitleHeight: 16,
+  fnMaxTextWidth: (sel) => {
+    const allWidth = sel.selectAll("text").nodes().map((e) => {
+      return e.getBBox().width;
+    });
+    return Math.max.apply(null, allWidth);
+  },
+  fnTranslate: (x, y) => {
+    return "translate(X Y)"
+      .replace("X", x)
+      .replace("Y", y);
+  },
+  fnCartesianCoord: (x, y) => {
+    return "matrix(1 0 0 -1 X Y)"
+      .replace("X", x)
+      .replace("Y", y);
+  },
+  fnValue: (d) => {
+    return d;
+  }
 };
 
 // Scan hook points (CSS class render-the-fuck)

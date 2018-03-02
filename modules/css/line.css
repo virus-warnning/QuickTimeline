@@ -1,5 +1,15 @@
 /* CSS for line */
 
+.render-the-fuck.rtf-line > g.legendIcon > circle {
+  stroke: #000000;
+  stroke-width: 1.0;
+}
+
+.render-the-fuck.rtf-line > g.legendText {
+  fill: #303030;
+  font-size: 90%;
+}
+
 .render-the-fuck.rtf-line > g.chart > rect {
   fill: #ffffff;
 }
@@ -7,41 +17,58 @@
 .render-the-fuck.rtf-line > g.chart > path.axis {
   fill: none;
   stroke: #000000;
-  stroke-opacity: 1.0;
   stroke-width: 1.5;
+}
+
+.render-the-fuck.rtf-line > g.chart > g.yscale > line {
+  stroke: #000000;
+  stroke-width: 1.5;
+}
+
+.render-the-fuck.rtf-line > g.chart > g.yscale > text {
+  fill: #000000;
+  text-anchor: end;
 }
 
 .render-the-fuck.rtf-line > g.chart > g.line > path {
   fill: none;
-  stroke-opacity: 1.0;
   stroke-width: 1.5;
 }
 
 .render-the-fuck.rtf-line > g.chart > g.focusedPosition > line.focusedAxis {
   fill: none;
-  stroke: #707070;
-  stroke-opacity: 1.0;
+  stroke: #505050;
   stroke-width: 1.5;
   stroke-dasharray: 7, 3;
 }
 
-.render-the-fuck.rtf-line > g.chart > g.focusedPosition > g.focusedPoint > circle {
+.render-the-fuck.rtf-line > g.chart > g.focusedPosition > text.focusedLabel {
+  fill: #505050;
+  text-anchor: middle;
+}
+
+.render-the-fuck.rtf-line > g.chart > g.focusedPosition > g.focusedPoint {
   fill: #ffffff;
-  fill-opacity: 1.0;
   stroke-opacity: 1.0;
   stroke-width: 2.0;
 }
 
-.render-the-fuck.rtf-line > g.chart > g.focusedPosition > g.focusedValueBorder > rect {
+.render-the-fuck.rtf-line > g.chart > g.focusedPosition > g.focusedValueBorder {
   fill: #ffffff;
   fill-opacity: 0.5;
   stroke-opacity: 1.0;
   stroke-width: 2.0;
 }
 
-.render-the-fuck.rtf-line > g.chart > g.focusedPosition > g.focusedValue > text {
+.render-the-fuck.rtf-line > g.chart > g.focusedPosition > g.focusedValue {
   dominant-baseline: central;
 }
+
+.render-the-fuck.rtf-line > g.legendIcon > circle:nth-child(5n+1) { fill: #0000a0; }
+.render-the-fuck.rtf-line > g.legendIcon > circle:nth-child(5n+2) { fill: #a00000; }
+.render-the-fuck.rtf-line > g.legendIcon > circle:nth-child(5n+3) { fill: #00a000; }
+.render-the-fuck.rtf-line > g.legendIcon > circle:nth-child(5n+4) { fill: #a05000; }
+.render-the-fuck.rtf-line > g.legendIcon > circle:nth-child(5n) { fill: #c0c000; }
 
 .render-the-fuck.rtf-line > g.chart > g.line > path:nth-child(5n+1) { stroke: #0000a0; }
 .render-the-fuck.rtf-line > g.chart > g.line > path:nth-child(5n+2) { stroke: #a00000; }

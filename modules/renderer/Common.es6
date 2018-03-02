@@ -1,9 +1,6 @@
 // The fuck line
 export default function(d3, thefuck, WTF_PARAMS) {
   const svg = this;
-  const SVG_WIDTH = svg.attr("width");
-  const SVG_HEIGHT = svg.attr("height");
-  const MARGIN = 20;
 
   // Draw background
   svg.append("rect").classed("bg", true)
@@ -15,11 +12,23 @@ export default function(d3, thefuck, WTF_PARAMS) {
     .attr("height", "100%");
 
   // Draw graph title
-  if (thefuck.settings !== undefined && thefuck.settings.title !== undefined) {
+  if (thefuck.settings !== undefined) {
+    const x = svg.attr("width") / 2;
+    let y = svg.attr("height") - WTF_PARAMS.margin;
+
+    if (thefuck.settings.subtitle) {
+      svg.append("text")
+        .classed("subtitle", true)
+        .attr("x", x)
+        .attr("y", y)
+        .text(thefuck.settings.subtitle);
+      y -= WTF_PARAMS.subtitleHeight;
+    }
+
     svg.append("text")
       .classed("title", true)
-      .attr("x", SVG_WIDTH / 2)
-      .attr("y", SVG_HEIGHT - MARGIN)
+      .attr("x", x)
+      .attr("y", y)
       .text(thefuck.settings.title);
   }
 }

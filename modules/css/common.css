@@ -1,6 +1,13 @@
 .render-the-fuck > text.title {
   fill: #000000;
-  font-size: 1.5em;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-anchor: middle;
+}
+
+.render-the-fuck > text.subtitle {
+  fill: #505050;
+  font-size: 0.8em;
   font-weight: bold;
   text-anchor: middle;
 }
